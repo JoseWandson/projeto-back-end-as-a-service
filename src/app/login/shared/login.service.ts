@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router } from "@angular/router";
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
 
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -24,7 +22,7 @@ export class LoginService {
 
       this.afAuth.auth.signInWithEmailAndPassword(mail, password).then((user) => {
 
-        //localStorage['token'] = user.Yd;
+        localStorage['token'] = user.user.uid;
         this.router.navigate(['']);
 
       })
@@ -40,6 +38,8 @@ export class LoginService {
   }
 
   public logout() {
-    return this.afAuth.auth.signOut();
+    this.afAuth.auth.signOut();
+    delete localStorage['token'];
+    this.router.navigate(['/login']);
   }
 }
